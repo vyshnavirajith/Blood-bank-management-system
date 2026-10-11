@@ -171,13 +171,18 @@
             </div>
 
             <div class="sidebar-footer">
-                <div class="user-chip">
-                    <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150&auto=format&fit=crop&q=80" class="user-avatar" alt="User">
-                    <div class="user-info">
-                        <div class="user-name">Dr. Alexander Wright</div>
-                        <div class="user-role">Blood Bank Manager</div>
-                    </div>
-                </div>
+                
+<div class="user-chip">
+    <div class="admin-avatar">
+        <i class="fa-solid fa-user-tie"></i>
+    </div>
+
+    <div class="user-info">
+        <div class="user-name" id="topbar-profile-name">Dr. Alexander Wright</div>
+        <div class="user-role">Blood Bank Manager</div>
+    </div>
+</div>
+
             </div>
         </aside>
 
@@ -239,8 +244,11 @@
                     <!-- User Profile Dropdown -->
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center gap-2 text-decoration-none" data-bs-toggle="dropdown">
-                            <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150&auto=format&fit=crop&q=80" width="38" height="38" class="rounded-circle border border-2 border-danger" alt="User">
-                            <span class="fw-bold text-dark d-none d-md-inline fs-7">Dr. Wright <i class="fa-solid fa-chevron-down ms-1 text-muted fs-8"></i></span>
+                            <img src="https://www.freeiconspng.com/uploads/--tie-user-users-work-worker-working-icon--icon-search-engine-6.png" width="38" height="38" class="rounded-circle border border-2 border-danger" alt="User">
+                            <span class="fw-bold text-dark d-none d-md-inline fs-7">
+    <span id="topbar-short-name">Dr. Wright</span>
+    <i class="fa-solid fa-chevron-down ms-1 text-muted fs-8"></i>
+</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg p-2">
                             <li><a class="dropdown-item" href="#" data-view-target="settings-view"><i class="fa-solid fa-user me-2 text-muted"></i> My Profile</a></li>
@@ -587,14 +595,74 @@
 
                 <!-- 4. BLOOD STOCK VIEW -->
                 <section id="stock-view" class="view-section">
-                    <div class="page-header-container">
-                        <div>
-                            <h2 class="page-title">Blood Stock Management</h2>
-                            <div class="breadcrumb-nav">
-                                <a href="#">Home</a> <i class="fa-solid fa-chevron-right mx-1 fs-8"></i> <span>Inventory Cards</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="page-header-container d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+        <h2 class="page-title">Blood Stock Management</h2>
+        <div class="breadcrumb-nav">
+            <a href="#">Home</a>
+            <i class="fa-solid fa-chevron-right mx-1 fs-8"></i>
+            <span>Inventory Cards</span>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" id="btnShowAddStock">
+        <i class="fa-solid fa-plus me-2"></i>
+        Add New Blood Stock
+    </button>
+</div>
+
+<div class="card mb-4 d-none" id="addStockCard">
+    <div class="card-body">
+        <h5 class="mb-3">Add New Hospital Blood Stock</h5>
+
+        <form id="addStockForm">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="stockHospital" class="form-label">Hospital</label>
+                    <select id="stockHospital" class="form-select" required>
+                        <option value="">Select hospital</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="stockBloodGroup" class="form-label">Blood Group</label>
+                    <select id="stockBloodGroup" class="form-select" required>
+                        <option value="">Select blood group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="stockUnits" class="form-label">Available Units</label>
+                    <input type="number" id="stockUnits" class="form-control"
+                           min="0" step="1" value="0" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="stockCapacity" class="form-label">Target Capacity</label>
+                    <input type="number" id="stockCapacity" class="form-control"
+                           min="1" step="1" value="50" required>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Save Stock
+                </button>
+                <button type="button" class="btn btn-light" id="btnCancelAddStock">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
                     <div class="row" id="stockCardsContainer">
                         <!-- Rendered via JS -->
@@ -603,49 +671,120 @@
 
                 <!-- 5. BLOOD REQUESTS VIEW -->
                 <section id="requests-view" class="view-section">
-                    <div class="page-header-container">
-                        <div>
-                            <h2 class="page-title">Blood Requests Management</h2>
-                            <div class="breadcrumb-nav">
-                                <a href="#">Home</a> <i class="fa-solid fa-chevron-right mx-1 fs-8"></i> <span>Requests</span>
-                            </div>
-                        </div>
-                    </div>
+    <div class="page-header-container d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h2 class="page-title">Blood Requests Management</h2>
+            <div class="breadcrumb-nav">
+                <a href="#">Home</a>
+                <i class="fa-solid fa-chevron-right mx-1 fs-8"></i>
+                <span>Requests</span>
+            </div>
+        </div>
 
-                    <div class="card-custom mb-4 p-2">
-                        <div class="d-flex gap-2 flex-wrap" id="requestStatusTabs">
-                            <button class="btn btn-sm btn-primary active" data-filter="All">All Requests</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="Pending">Pending</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="Approved">Approved</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="Rejected">Rejected</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="Emergency">Emergency</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="High Priority">High Priority</button>
-                        </div>
-                    </div>
+        <button type="button" class="btn btn-danger fw-bold" id="btnShowCreateRequest">
+            <i class="fa-solid fa-plus me-2"></i>Create New Request
+        </button>
+    </div>
 
-                    <div class="table-custom-wrapper">
-                        <div class="table-responsive">
-                            <table class="table table-custom">
-                                <thead>
-                                    <tr>
-                                        <th>Request ID</th>
-                                        <th>Recipient</th>
-                                        <th>Hospital</th>
-                                        <th>Blood Group</th>
-                                        <th>Units Needed</th>
-                                        <th>Priority</th>
-                                        <th>Date & Time</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="requestsTableBody">
-                                    <!-- Rendered via JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
+    <!-- Create Request Form -->
+    <div class="card-custom mb-4 d-none" id="createRequestCard">
+        <h5 class="fw-bold mb-3">Create New Blood Request</h5>
+
+        <form id="createRequestForm">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="requestRecipient" class="form-label">Recipient</label>
+                    <select id="requestRecipient" class="form-select" required>
+                        <option value="">Select recipient</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="requestHospital" class="form-label">Hospital</label>
+                    <select id="requestHospital" class="form-select" required>
+                        <option value="">Select hospital</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="requestBloodGroup" class="form-label">Blood Group</label>
+                    <select id="requestBloodGroup" class="form-select" required>
+                        <option value="">Select blood group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="requestUnits" class="form-label">Units Needed</label>
+                    <input type="number" id="requestUnits" class="form-control"
+                           min="1" step="1" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="requestPriority" class="form-label">Priority</label>
+                    <select id="requestPriority" class="form-select" required>
+                        <option value="Normal / Elective">Normal / Elective</option>
+                        <option value="High Priority">High Priority</option>
+                        <option value="Emergency">Emergency</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-danger fw-bold">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Submit Request
+                </button>
+
+                <button type="button" class="btn btn-outline-secondary" id="btnCancelCreateRequest">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Request Status Filters -->
+    <div class="card-custom mb-4 p-2">
+        <div class="d-flex gap-2 flex-wrap" id="requestStatusTabs">
+            <button class="btn btn-sm btn-primary active" data-filter="All">All Requests</button>
+            <button class="btn btn-sm btn-outline-secondary" data-filter="Pending">Pending</button>
+            <button class="btn btn-sm btn-outline-secondary" data-filter="Approved">Approved</button>
+            <button class="btn btn-sm btn-outline-secondary" data-filter="Rejected">Rejected</button>
+            <button class="btn btn-sm btn-outline-secondary" data-filter="Emergency">Emergency</button>
+            <button class="btn btn-sm btn-outline-secondary" data-filter="High Priority">High Priority</button>
+        </div>
+    </div>
+
+    <!-- Requests Table -->
+    <div class="table-custom-wrapper">
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Recipient</th>
+                        <th>Hospital</th>
+                        <th>Blood Group</th>
+                        <th>Units Needed</th>
+                        <th>Priority</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="requestsTableBody">
+                    <!-- Rendered via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 
                 <!-- 6. DONATION HISTORY VIEW -->
                 <section id="donations-view" class="view-section">
@@ -764,77 +903,172 @@
                 </section>
 
                 <!-- 9. SETTINGS & PROFILE VIEW -->
-                <section id="settings-view" class="view-section">
-                    <div class="page-header-container">
-                        <div>
-                            <h2 class="page-title">Profile & System Settings</h2>
-                            <div class="breadcrumb-nav">
-                                <a href="#">Home</a> <i class="fa-solid fa-chevron-right mx-1 fs-8"></i> <span>Settings</span>
-                            </div>
+                <!-- 9. SETTINGS & PROFILE VIEW -->
+<section id="settings-view" class="view-section">
+    <div class="page-header-container">
+        <div>
+            <h2 class="page-title">Profile & System Settings</h2>
+            <div class="breadcrumb-nav">
+                <a href="#">Home</a>
+                <i class="fa-solid fa-chevron-right mx-1 fs-8"></i>
+                <span>Settings</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card-custom text-center">
+                <img
+                    id="profile-avatar"
+                    src="https://www.freeiconspng.com/uploads/--tie-user-users-work-worker-working-icon--icon-search-engine-6.png"
+                    class="rounded-circle mb-3 border border-4 border-danger"
+                    width="110"
+                    height="110"
+                    alt="Profile photo"
+                >
+
+                <h4 class="fw-bold mb-1" id="profile-display-name">
+                    Dr. Alexander Wright
+                </h4>
+
+                <span class="badge bg-danger mb-2">
+                    Blood Bank Senior Admin
+                </span>
+
+                <p class="text-muted fs-7">
+                    Employee ID: <strong>BB-STAFF-9021</strong>
+                </p>
+
+                <input
+                    type="file"
+                    id="profile-photo-input"
+                    accept="image/*"
+                    hidden
+                >
+
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger w-100 mb-2"
+                    id="change-profile-photo"
+                >
+                    Change Profile Photo
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card-custom">
+                <h5 class="fw-bold mb-3">Staff Profile Details</h5>
+
+                <form id="profile-form">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fs-7 fw-semibold">
+                                Full Name
+                            </label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="profile-name"
+                                required
+                            >
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fs-7 fw-semibold">
+                                Email Address
+                            </label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="profile-email"
+                                required
+                            >
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fs-7 fw-semibold">
+                                Phone Number
+                            </label>
+                            <input
+                                type="tel"
+                                class="form-control"
+                                id="profile-phone"
+                                required
+                            >
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fs-7 fw-semibold">
+                                Role
+                            </label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="Chief Blood Bank Administrator"
+                                readonly
+                            >
                         </div>
                     </div>
 
-                    <div class="row g-4">
-                        <div class="col-lg-4">
-                            <div class="card-custom text-center">
-                                <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150&auto=format&fit=crop&q=80" class="rounded-circle mb-3 border border-4 border-danger" width="110" height="110" alt="Avatar">
-                                <h4 class="fw-bold mb-1">Dr. Alexander Wright</h4>
-                                <span class="badge bg-danger mb-2">Blood Bank Senior Admin</span>
-                                <p class="text-muted fs-7">Employee ID: <strong>BB-STAFF-9021</strong></p>
-                                <button class="btn btn-sm btn-outline-danger w-100 mb-2" onclick="App.showToast('Profile', 'Profile picture update feature triggered', 'info')">Change Profile Photo</button>
-                            </div>
-                        </div>
+                    <button type="submit" class="btn btn-danger fw-bold">
+                        Save Profile Changes
+                    </button>
+                </form>
 
-                        <div class="col-lg-8">
-                            <div class="card-custom">
-                                <h5 class="fw-bold mb-3">Staff Profile Details</h5>
-                                <form onsubmit="event.preventDefault(); App.showToast('Saved', 'Profile updated successfully!', 'success');">
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label fs-7 fw-semibold">Full Name</label>
-                                            <input type="text" class="form-control" value="Dr. Alexander Wright">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label fs-7 fw-semibold">Email Address</label>
-                                            <input type="email" class="form-control" value="alexander.wright@lifepulse.org">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label fs-7 fw-semibold">Phone Number</label>
-                                            <input type="text" class="form-control" value="+1 (555) 234-8901">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label fs-7 fw-semibold">Role</label>
-                                            <input type="text" class="form-control" value="Chief Blood Bank Administrator" readonly>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-danger fw-bold">Save Profile Changes</button>
-                                </form>
+                <hr class="my-4">
 
-                                <hr class="my-4">
+                <h5 class="fw-bold mb-3">System Preferences</h5>
 
-                                <h5 class="fw-bold mb-3">System Preferences</h5>
-                                <div class="d-flex align-items-center justify-content-between py-2">
-                                    <div>
-                                        <div class="fw-bold fs-7">Dark Mode Theme</div>
-                                        <div class="fs-7 text-muted">Switch interface theme</div>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input btn-dark-mode-toggle" type="checkbox" role="switch">
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between py-2">
-                                    <div>
-                                        <div class="fw-bold fs-7">Low Stock Email Alerts</div>
-                                        <div class="fs-7 text-muted">Receive notifications when blood inventory drops below threshold</div>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" checked>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="d-flex align-items-center justify-content-between py-2">
+                    <div>
+                        <div class="fw-bold fs-7">Dark Mode Theme</div>
+                        <div class="fs-7 text-muted">
+                            Switch interface theme
                         </div>
                     </div>
-                </section>
+
+                    <div class="form-check form-switch">
+                        <input
+                            class="form-check-input btn-dark-mode-toggle"
+                            type="checkbox"
+                            id="dark-mode-setting"
+                            role="switch"
+                        >
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between py-2">
+                    <div>
+                        <div class="fw-bold fs-7">Low Stock Email Alerts</div>
+                        <div class="fs-7 text-muted">
+                            Save your preference for low inventory alerts
+                        </div>
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="low-stock-alert-setting"
+                            role="switch"
+                            checked
+                        >
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn btn-outline-danger btn-sm mt-3"
+                    id="save-settings"
+                >
+                    Save Preferences
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
             </main>
 
@@ -909,37 +1143,49 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fs-7 fw-semibold">Eligibility Status</label>
-                            <select id="donorStatusInput" class="form-select">
-                                <option value="Eligible">Eligible</option>
-                                <option value="Resting">Resting</option>
-                                <option value="Ineligible">Ineligible</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger fw-bold" onclick="App.saveDonorForm()">Save Donor Record</button>
-                </div>
-            </div>
-        </div>
+    <label class="form-label fs-7 fw-semibold">Eligibility Status</label>
+    <select id="donorStatusInput" class="form-select" required>
+        <option value="Eligible">Eligible</option>
+        <option value="Resting">Resting</option>
+        <option value="Ineligible">Ineligible</option>
+        <option value="Donated">Donated</option>
+    </select>
+</div>
+
+<div id="donorDonationDetails" class="d-none">
+    <div class="mb-3">
+        <label class="form-label fs-7 fw-semibold">Donation Camp</label>
+        <select id="donorCampInput" class="form-select">
+            <option value="">Select donation camp</option>
+            <option value="1">Life Saver Camp</option>
+            <option value="2">Youth Blood Drive</option>
+            <option value="3">Community Donation Camp</option>
+        </select>
     </div>
 
-    <!-- 2. Donor Details View Modal -->
-    <div class="modal fade" id="donorDetailsModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-0 pb-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4" id="donorDetailsModalContent">
-                    <!-- Rendered dynamically -->
-                </div>
-            </div>
-        </div>
+    <div class="mb-3">
+        <label class="form-label fs-7 fw-semibold">Donation Date</label>
+        <input type="date" id="donorDonationDateInput"
+               class="form-control">
     </div>
 
+    <div class="mb-3">
+        <label class="form-label fs-7 fw-semibold">Units Donated</label>
+        <input type="number" id="donorUnitsInput"
+               class="form-control" min="1" step="1"
+               placeholder="Enter units donated">
+    </div>
+</div>
+</form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+    <button type="button" class="btn btn-danger fw-bold"
+            onclick="App.saveDonorForm()">Save Donor Record</button>
+</div>
+</div>
+</div>
+</div>
     <!-- 3. Register Recipient Modal -->
     <div class="modal fade" id="recipientModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -986,24 +1232,30 @@
                                 <input type="number" id="rcpUnitsInput" class="form-control" value="2" min="1" max="10">
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label fs-7 fw-semibold">Hospital Name *</label>
-                            <input type="text" id="rcpHospitalInput" class="form-control" placeholder="Hospital / Trauma Center">
-                        </div>
-                        <div class="row g-2 mb-3">
-                            <div class="col-6">
-                                <label class="form-label fs-7 fw-semibold">Attending Doctor</label>
-                                <input type="text" id="rcpDoctorInput" class="form-control" placeholder="Dr. Name">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label fs-7 fw-semibold">Urgency Priority</label>
-                                <select id="rcpPriorityInput" class="form-select">
-                                    <option value="Normal">Normal</option>
-                                    <option value="High">High</option>
-                                    <option value="Emergency">Emergency</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="mb-3">
+    <label class="form-label fs-7 fw-semibold">Hospital Name *</label>
+    <select id="rcpHospitalInput" class="form-select" required>
+        <option value="">Select Hospital</option>
+    </select>
+</div>
+
+<div class="row g-2 mb-3">
+    <div class="col-6">
+        <label class="form-label fs-7 fw-semibold">Attending Doctor *</label>
+        <select id="rcpDoctorInput" class="form-select" required>
+            <option value="">Select Doctor</option>
+        </select>
+    </div>
+
+    <div class="col-6">
+        <label class="form-label fs-7 fw-semibold">Urgency Priority</label>
+        <select id="rcpPriorityInput" class="form-select">
+            <option value="Normal">Normal</option>
+            <option value="High">High</option>
+            <option value="Emergency">Emergency</option>
+        </select>
+    </div>
+</div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -1128,6 +1380,7 @@
     <!-- Custom Scripts -->
     <script src="data.js"></script>
     <script src="charts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
