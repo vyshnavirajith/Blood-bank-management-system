@@ -66,61 +66,89 @@ const ChartManager = {
     },
 
     // 2. Reports: Monthly Donations vs Requests Line Chart
-    initReportsMonthlyChart() {
-        const ctx = document.getElementById('reportsMonthlyChart');
-        if (!ctx) return;
+    async initReportsMonthlyChart() {
+    const ctx = document.getElementById('reportsMonthlyChart');
+    if (!ctx) return;
 
-        if (this.instances.reportsMonthly) {
-            this.instances.reportsMonthly.destroy();
-        }
+    if (this.instances.reportsMonthly) {
+        this.instances.reportsMonthly.destroy();
+    }
 
-        this.instances.reportsMonthly = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                datasets: [
-                    {
-                        label: 'Blood Donations',
-                        data: [95, 110, 105, 140, 130, 124],
-                        borderColor: '#C62828',
-                        backgroundColor: 'rgba(198, 40, 40, 0.1)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointBackgroundColor: '#C62828',
-                        pointRadius: 5
-                    },
-                    {
-                        label: 'Blood Requests',
-                        data: [80, 95, 120, 115, 135, 142],
-                        borderColor: '#06B6D4',
-                        backgroundColor: 'rgba(6, 182, 212, 0.05)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointBackgroundColor: '#06B6D4',
-                        pointRadius: 5
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top' }
+    this.instances.reportsMonthly = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Blood Donations',
+                    data: [],
+                    borderColor: '#C62828',
+                    backgroundColor: 'rgba(198, 40, 40, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#C62828',
+                    pointRadius: 5
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                {
+                    label: 'Blood Requests',
+                    data: [],
+                    borderColor: '#06B6D4',
+                    backgroundColor: 'rgba(6, 182, 212, 0.05)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#06B6D4',
+                    pointRadius: 5
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.1)'
                     },
-                    x: {
-                        grid: { display: false }
+                    ticks: {
+                        precision: 0
                     }
+                },
+                x: {
+                    grid: { display: false }
                 }
             }
-        });
-    },
+        }
+    });
+
+    try {
+        const response = await fetch(
+            'http://localhost:5000/api/reports/monthly'
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to load monthly report data.');
+        }
+
+        const monthlyData = await response.json();
+        const chart = this.instances.reportsMonthly;
+
+        chart.data.labels = monthlyData.map(item => item.month);
+        chart.data.datasets[0].data =
+            monthlyData.map(item => Number(item.donations));
+        chart.data.datasets[1].data =
+            monthlyData.map(item => Number(item.requests));
+
+        chart.update();
+    } catch (error) {
+        console.error('Monthly chart error:', error);
+    }
+},
 
     // 3. Reports: Blood Group Distribution Doughnut Chart
     initReportsDistributionChart() {
@@ -160,128 +188,210 @@ const ChartManager = {
     },
 
     // 4. Reports: Request Urgency Breakdown Bar Chart
-    initReportsUrgencyChart() {
-        const ctx = document.getElementById('reportsUrgencyChart');
-        if (!ctx) return;
+    async initReportsUrgencyChart() {
+    const ctx = document.getElementById('reportsUrgencyChart');
+    if (!ctx) return;
 
-        if (this.instances.reportsUrgency) {
-            this.instances.reportsUrgency.destroy();
-        }
+    if (this.instances.reportsUrgency) {
+        this.instances.reportsUrgency.destroy();
+    }
 
-        this.instances.reportsUrgency = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Emergency', 'High Priority', 'Normal / Elective'],
-                datasets: [{
-                    label: 'Number of Requests',
-                    data: [42, 68, 32],
-                    backgroundColor: ['#EF4444', '#F59E0B', '#10B981'],
-                    borderRadius: 8,
-                    barThickness: 36
-                }]
+    this.instances.reportsUrgency = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Emergency', 'High Priority', 'Normal / Elective'],
+            datasets: [{
+                label: 'Number of Requests',
+                data: [0, 0, 0],
+                backgroundColor: ['#EF4444', '#F59E0B', '#10B981'],
+                borderRadius: 8,
+                barThickness: 36
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                    },
-                    x: {
-                        grid: { display: false }
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.1)'
                     }
+                },
+                x: {
+                    grid: { display: false }
                 }
             }
+        }
+    });
+
+    try {
+        const response = await fetch('http://localhost:5000/api/reports/urgency');
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch urgency report data');
+        }
+
+        const rows = await response.json();
+
+        const counts = {
+            'Emergency': 0,
+            'High Priority': 0,
+            'Normal / Elective': 0
+        };
+
+        rows.forEach(row => {
+            counts[row.urgency] = Number(row.total);
         });
-    },
+
+        this.instances.reportsUrgency.data.datasets[0].data = [
+            counts['Emergency'],
+            counts['High Priority'],
+            counts['Normal / Elective']
+        ];
+
+        this.instances.reportsUrgency.update();
+    } catch (error) {
+        console.error('Error loading urgency chart:', error);
+    }
+},
 
     // 5. Reports: Hospital Requests Horizontal Bar Chart
-    initReportsHospitalChart() {
-        const ctx = document.getElementById('reportsHospitalChart');
-        if (!ctx) return;
+    async initReportsHospitalChart() {
+    const ctx = document.getElementById('reportsHospitalChart');
+    if (!ctx) return;
 
-        if (this.instances.reportsHospital) {
-            this.instances.reportsHospital.destroy();
-        }
+    if (this.instances.reportsHospital) {
+        this.instances.reportsHospital.destroy();
+    }
 
-        const hospitalNames = BloodBankData.hospitals.map(h => h.name.replace(' Hospital', ''));
-        const requestCounts = [38, 26, 19, 14, 8];
-
-        this.instances.reportsHospital = new Chart(ctx, {
-            type: 'bar',
-            indexAxis: 'y',
-            data: {
-                labels: hospitalNames,
-                datasets: [{
-                    label: 'Units Dispatched',
-                    data: requestCounts,
-                    backgroundColor: '#C62828',
-                    borderRadius: 6,
-                    barThickness: 20
-                }]
+    this.instances.reportsHospital = new Chart(ctx, {
+        type: 'bar',
+        indexAxis: 'y',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Approved Request Units',
+                data: [],
+                backgroundColor: '#C62828',
+                borderRadius: 6,
+                barThickness: 20
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                    },
-                    y: {
-                        grid: { display: false }
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.1)'
                     }
+                },
+                y: {
+                    grid: { display: false }
                 }
             }
-        });
-    },
+        }
+    });
+
+    try {
+        const response = await fetch(
+            'http://localhost:5000/api/reports/hospital-dispatch'
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch hospital report data');
+        }
+
+        const rows = await response.json();
+
+        this.instances.reportsHospital.data.labels = rows.map(
+            row => row.hospital_name.replace(/ Hospital$/i, '')
+        );
+
+        this.instances.reportsHospital.data.datasets[0].data = rows.map(
+            row => Number(row.units)
+        );
+
+        this.instances.reportsHospital.update();
+    } catch (error) {
+        console.error('Error loading hospital report chart:', error);
+    }
+},
 
     // 6. Donation History View Monthly Chart
-    initDonationsTrendChart() {
-        const ctx = document.getElementById('donationsTrendChart');
-        if (!ctx) return;
+    async initDonationsTrendChart() {
+    const ctx = document.getElementById('donationsTrendChart');
+    if (!ctx) return;
 
-        if (this.instances.donationsTrend) {
-            this.instances.donationsTrend.destroy();
-        }
+    if (this.instances.donationsTrend) {
+        this.instances.donationsTrend.destroy();
+    }
 
-        this.instances.donationsTrend = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                datasets: [{
-                    label: 'Units Collected',
-                    data: [28, 34, 45, 31],
-                    borderColor: '#10B981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                    fill: true,
-                    tension: 0.4,
-                    borderWidth: 3,
-                    pointRadius: 6,
-                    pointBackgroundColor: '#10B981'
-                }]
+    this.instances.donationsTrend = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Units Collected',
+                data: [],
+                borderColor: '#10B981',
+                backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3,
+                pointRadius: 6,
+                pointBackgroundColor: '#10B981'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.1)'
+                    }
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                    },
-                    x: { grid: { display: false } }
+                x: {
+                    grid: { display: false }
                 }
             }
-        });
+        }
+    });
+
+    try {
+        const response = await fetch(
+            'http://localhost:5000/api/reports/donations-trend'
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch donations trend data');
+        }
+
+        const rows = await response.json();
+
+        this.instances.donationsTrend.data.labels =
+            rows.map(row => row.week);
+
+        this.instances.donationsTrend.data.datasets[0].data =
+            rows.map(row => Number(row.units));
+
+        this.instances.donationsTrend.update();
+    } catch (error) {
+        console.error('Error loading donations trend chart:', error);
     }
-};
+},
+    }
+;
