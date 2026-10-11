@@ -9,11 +9,12 @@ app.use(cors());
 app.use(express.json());
 
 const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "blood_bank",
-    password: process.env.DB_PASSWORD,
-    port: 5432
+    host: process.env.DB_HOST,
+port: Number(process.env.DB_PORT || 5432),
+database: process.env.DB_NAME,
+user: process.env.DB_USER,
+password: process.env.DB_PASSWORD,
+ssl: { rejectUnauthorized: false }
 });
 
 // Test API
@@ -1315,7 +1316,7 @@ app.get("/api/reports/donations-trend", async (req, res) => {
     }
 });
 // Start server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
