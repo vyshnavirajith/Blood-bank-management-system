@@ -341,7 +341,7 @@ if (addStockForm) {
 
     try {
         const response = await fetch(
-            'http://localhost:5000/api/dashboard-stats'
+            'https://blood-bank-management-system-1tdi.onrender.com/api/dashboard-stats'
         );
 
         if (!response.ok) {
@@ -396,7 +396,7 @@ if (elApproved) {
     if (!container) return;
 
     try {
-        const response = await fetch('http://localhost:5000/api/blood-stock');
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/blood-stock');
 
         if (!response.ok) {
             throw new Error('Failed to fetch blood stock');
@@ -555,7 +555,7 @@ async adjustStock(stockId, delta) {
 
     try {
         const response = await fetch(
-            `http://localhost:5000/api/blood-stock/${stockId}`,
+            `https://blood-bank-management-system-1tdi.onrender.com/api/blood-stock/${stockId}`,
             {
                 method: 'PUT',
                 headers: {
@@ -656,7 +656,7 @@ async saveStockModal() {
 
     try {
         const response = await fetch(
-            `http://localhost:5000/api/blood-stock/${stockId}`,
+            `https://blood-bank-management-system-1tdi.onrender.com/api/blood-stock/${stockId}`,
             {
                 method: 'PUT',
                 headers: {
@@ -718,7 +718,7 @@ async renderDonorsTable() {
     const genderFilter = document.getElementById('donorGenderFilter')?.value || '';
 
     try {
-        const response = await fetch('http://localhost:5000/api/donors');
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/donors');
 
         if (!response.ok) {
             throw new Error('Failed to fetch donors');
@@ -861,7 +861,7 @@ openAddDonorModal() {
 async openEditDonorModal(id) {
     try {
         const response = await fetch(
-            `http://localhost:5000/api/donors/${id}`
+            `https://blood-bank-management-system-1tdi.onrender.com/api/donors/${id}`
         );
 
         if (!response.ok) {
@@ -996,7 +996,7 @@ console.log("Selected donation camp:", document.getElementById('donorCampInput')
 
         if (editId) {
             response = await fetch(
-                `http://localhost:5000/api/donors/${editId}`,
+                `https://blood-bank-management-system-1tdi.onrender.com/api/donors/${editId}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -1010,7 +1010,7 @@ console.log("Selected donation camp:", document.getElementById('donorCampInput')
             donorData.donor_id = donorId;
 
             response = await fetch(
-                'http://localhost:5000/api/donors',
+                'https://blood-bank-management-system-1tdi.onrender.com/api/donors',
                 {
                     method: 'POST',
                     headers: {
@@ -1035,7 +1035,7 @@ console.log("Selected donation camp:", document.getElementById('donorCampInput')
         if (isDonated && !editId) {
             // Refresh donation history after the backend saves the record.
             const historyResponse = await fetch(
-                'http://localhost:5000/api/donations'
+                'https://blood-bank-management-system-1tdi.onrender.com/api/donations'
             );
 
             if (!historyResponse.ok) {
@@ -1088,7 +1088,7 @@ async viewDonorDetails(id) {
     try {
 
         const response = await fetch(
-            `http://localhost:5000/api/donors/${id}`
+            `https://blood-bank-management-system-1tdi.onrender.com/api/donors/${id}`
         );
 
         if (!response.ok) {
@@ -1195,7 +1195,7 @@ async viewDonorDetails(id) {
         async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/donors/${id}`,
+                    `https://blood-bank-management-system-1tdi.onrender.com/api/donors/${id}`,
                     {
                         method: "DELETE"
                     }
@@ -1240,7 +1240,7 @@ async renderRecipientsTable() {
     if (!tbody) return;
 
     try {
-        const response = await fetch('http://localhost:5000/api/recipients');
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/recipients');
 
         if (!response.ok) {
             throw new Error('Failed to fetch recipients');
@@ -1345,7 +1345,7 @@ console.log("Mapped recipients:", data.map(r => ({
 async openAddRecipientModal() {
     try {
         const response = await fetch(
-            'http://localhost:5000/api/recipient-form-options'
+            'https://blood-bank-management-system-1tdi.onrender.com/api/recipient-form-options'
         );
 
         if (!response.ok) {
@@ -1416,7 +1416,7 @@ async saveRecipientForm() {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/recipients', {
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/recipients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1471,7 +1471,7 @@ async saveRecipientForm() {
         async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/recipients/${id}`,
+                    `https://blood-bank-management-system-1tdi.onrender.com/api/recipients/${id}`,
                     {
                         method: 'DELETE'
                     }
@@ -1513,7 +1513,7 @@ async saveRecipientForm() {
 
         try {
             const response = await fetch(
-                'http://localhost:5000/api/requests'
+                'https://blood-bank-management-system-1tdi.onrender.com/api/requests'
             );
 
             if (!response.ok) {
@@ -1660,7 +1660,7 @@ async saveRecipientForm() {
     async approveRequest(reqId) {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/requests/${encodeURIComponent(reqId)}/status`,
+                `https://blood-bank-management-system-1tdi.onrender.com/api/requests/${encodeURIComponent(reqId)}/status`,
                 {
                     method: 'PUT',
                     headers: {
@@ -1708,7 +1708,7 @@ async saveRecipientForm() {
     async rejectRequest(reqId) {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/requests/${encodeURIComponent(reqId)}/status`,
+                `https://blood-bank-management-system-1tdi.onrender.com/api/requests/${encodeURIComponent(reqId)}/status`,
                 {
                     method: 'PUT',
                     headers: {
@@ -1764,7 +1764,7 @@ async saveRecipientForm() {
     `;
 
     try {
-        const response = await fetch('http://localhost:5000/api/donations');
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/donations');
 
         if (!response.ok) {
             throw new Error('Failed to fetch donation history');
@@ -1836,7 +1836,7 @@ async saveRecipientForm() {
     if (!container) return;
 
     try {
-        const response = await fetch('http://localhost:5000/api/hospitals');
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/hospitals');
 
         if (!response.ok) {
             throw new Error('Failed to fetch hospitals');
@@ -1958,7 +1958,7 @@ async saveRecipientForm() {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/hospitals', {
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/hospitals', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -2014,7 +2014,7 @@ confirmDeleteHospital(id) {
         async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/api/hospitals/${id}`,
+                    `https://blood-bank-management-system-1tdi.onrender.com/api/hospitals/${id}`,
                     {
                         method: 'DELETE'
                     }
@@ -2081,7 +2081,7 @@ confirmDeleteHospital(id) {
 
         try {
             const response = await fetch(
-                'http://localhost:5000/api/latest-blood-requests'
+                'https://blood-bank-management-system-1tdi.onrender.com/api/latest-blood-requests'
             );
 
             if (!response.ok) {
@@ -2149,7 +2149,7 @@ confirmDeleteHospital(id) {
     async triggerExport(format) {
     try {
         const response = await fetch(
-            'http://localhost:5000/api/dashboard-stats'
+            'https://blood-bank-management-system-1tdi.onrender.com/api/dashboard-stats'
         );
 
         if (!response.ok) {
@@ -2632,8 +2632,8 @@ handleProfilePhoto(event) {
 async loadRequestFormOptions() {
     try {
         const [recipientResponse, hospitalResponse] = await Promise.all([
-            fetch('http://localhost:5000/api/recipients'),
-            fetch('http://localhost:5000/api/hospitals')
+            fetch('https://blood-bank-management-system-1tdi.onrender.com/api/recipients'),
+            fetch('https://blood-bank-management-system-1tdi.onrender.com/api/hospitals')
         ]);
 
         if (!recipientResponse.ok || !hospitalResponse.ok) {
@@ -2699,7 +2699,7 @@ async createBloodRequest(event) {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/requests', {
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/requests', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -2745,7 +2745,7 @@ async createBloodRequest(event) {
 },
 async loadAddStockHospitals() {
     try {
-        const response = await fetch('http://localhost:5000/api/hospitals');
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/hospitals');
 
         if (!response.ok) {
             throw new Error('Failed to load hospitals.');
@@ -2793,7 +2793,7 @@ async createBloodStock(event) {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/blood-stock', {
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/blood-stock', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

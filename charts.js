@@ -128,7 +128,7 @@ const ChartManager = {
 
     try {
         const response = await fetch(
-            'http://localhost:5000/api/reports/monthly'
+            'https://blood-bank-management-system-1tdi.onrender.com/api/reports/monthly'
         );
 
         if (!response.ok) {
@@ -229,7 +229,7 @@ const ChartManager = {
     });
 
     try {
-        const response = await fetch('http://localhost:5000/api/reports/urgency');
+        const response = await fetch('https://blood-bank-management-system-1tdi.onrender.com/api/reports/urgency');
 
         if (!response.ok) {
             throw new Error('Failed to fetch urgency report data');
@@ -303,7 +303,7 @@ const ChartManager = {
 
     try {
         const response = await fetch(
-            'http://localhost:5000/api/reports/hospital-dispatch'
+            'https://blood-bank-management-system-1tdi.onrender.com/api/reports/hospital-dispatch'
         );
 
         if (!response.ok) {
@@ -373,7 +373,7 @@ const ChartManager = {
 
     try {
         const response = await fetch(
-            'http://localhost:5000/api/reports/donations-trend'
+            'https://blood-bank-management-system-1tdi.onrender.com/api/reports/donations-trend'
         );
 
         if (!response.ok) {
